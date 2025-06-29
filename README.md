@@ -200,3 +200,83 @@ Published by the **Ticket API Gateway Service** when a new support ticket is suc
   "createdAt": "2023-05-15T10:30:00Z",
   "updatedAt": "2023-05-15T10:30:00Z"
 }
+```
+### Ticket Assigned Event
+
+Published by the **Agent Assignment Service** once a ticket has been assigned to an agent.
+**Kafka Topic:** `ticket-assigned-events` (or similar)
+
+```json
+{
+  "ticketId": "uuid-string",
+  "assigneeId": "agent-uuid-string"
+}
+```
+
+## 5. Tests Included
+
+This project adopts a comprehensive testing strategy, including both unit and integration tests for each microservice to ensure reliability and correctness.
+
+### Unit Tests
+
+Unit tests focus on individual components in isolation, verifying their logic and behavior.
+
+* **Controller Tests:** Utilize Spring MockMvc to test REST API endpoints without starting a full server.
+
+* **Service Layer Tests:** Employ Mockito for mocking dependencies and testing business logic.
+
+* **Repository Tests:** Test database interactions using the H2 in-memory database.
+
+* **Event Serialization/Deserialization Tests:** Verify that Kafka message formats are correctly handled.
+
+### Integration Tests
+
+Integration tests validate the interactions between different components and services, including external dependencies like Kafka and databases.
+
+* **End-to-End Tests:** Use Testcontainers to spin up real Kafka instances for robust event processing tests.
+
+* **API Endpoint Tests:** Comprehensive tests for the exposed REST APIs.
+
+* **Event Processing Tests:** Verify that services correctly consume and produce Kafka events.
+
+* **Database Interaction Tests:** Ensure data persistence and retrieval are working as expected.
+
+### Running Tests
+
+* **To run only unit tests:**
+
+    ```bash
+    mvn test
+    ```
+
+* **To run both unit and integration tests:**
+
+    ```bash
+    mvn verify -P integration-test
+    ```
+
+  (Note: `mvn verify` is typically used for integration tests as it runs all phases up to `verify`, including `integration-test` if the profile is activated.)
+
+## 6. AI Tool Usage and Validation
+
+This project's development process has been augmented by various AI-powered tools to enhance productivity, code quality, and problem-solving.
+
+**AI Tools Utilized During Development:**
+
+* **Junie (IntelliJ Feature):** Used for code generation, refactoring suggestions, and general coding assistance within the IntelliJ IDEA environment.
+
+* **Google Gemini:** Employed for complex problem-solving, architectural discussions, debugging assistance, and generating documentation/explanation content.
+
+* **Ask Gordon (Docker Desktop Feature):** Utilized for Dockerfile optimization, Docker Compose configuration, and troubleshooting containerization issues.
+
+### Validation Steps
+
+The correctness and functionality of the system, including aspects influenced by AI tools, are validated through a multi-layered approach:
+
+1.  **Unit Tests:** Comprehensive unit tests verify the integrity and correctness of individual code components.
+
+2.  **Integration Tests:** End-to-end integration tests confirm that all services interact correctly and that the overall system behaves as expected in a near-production environment.
+
+3.  **Manual Testing with Swagger UI:** Direct interaction with the API Gateway via Swagger UI (if enabled) allows for quick manual verification of endpoint functionality.
+
+4.  **Docker Compose Deployment:** The use of Docker Compose ensures a consistent and reproducible deployment environment, helping to validate that the application runs correctly in a containerized setup.
