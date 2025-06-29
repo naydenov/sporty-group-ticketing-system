@@ -1,0 +1,105 @@
+# Sporty Group Ticketing System - Docker Setup
+
+This repository contains a multi-module Spring Boot application for a ticketing system, with Docker support for easy deployment.
+
+## Project Structure
+
+The project consists of three microservices:
+
+1. **Ticket API Gateway Service** (Port 8080): Acts as an API gateway for the ticketing system
+2. **Ticket Management Service** (Port 8081): Handles core ticket management functionality
+3. **Agent Assignment Service** (Port 8082): Manages the assignment of agents to tickets
+
+## Prerequisites
+
+- Docker and Docker Compose installed on your machine
+- Java 17 (for local development)
+- Maven (for local development)
+
+## Running with Docker Compose
+
+To run the entire application stack with Docker Compose:
+
+```bash
+# Build and start all services
+docker-compose up -d
+
+# Check the status of the services
+docker-compose ps
+
+# View logs of all services
+docker-compose logs -f
+
+# View logs of a specific service
+docker-compose logs -f ticket-api-gateway-service
+```
+
+## Service URLs
+
+Once the services are up and running, you can access them at:
+
+- **Ticket API Gateway Service**: http://localhost:8080
+  - Swagger UI: http://localhost:8080/swagger-ui.html
+  - API Docs: http://localhost:8080/api-docs
+
+- **Ticket Management Service**: http://localhost:8081
+  - Swagger UI: http://localhost:8081/swagger-ui.html
+  - API Docs: http://localhost:8081/api-docs
+  - H2 Console: http://localhost:8081/h2-console (JDBC URL: jdbc:h2:mem:ticketdb, Username: sa, Password: password)
+
+- **Agent Assignment Service**: http://localhost:8082
+  - Swagger UI: http://localhost:8082/swagger-ui.html
+  - API Docs: http://localhost:8082/api-docs
+  - H2 Console: http://localhost:8082/h2-console (JDBC URL: jdbc:h2:mem:agents-db, Username: sa, Password: empty)
+
+## Kafka Topics
+
+The services communicate with each other using Kafka topics:
+
+- `support-tickets`: Used for new support tickets
+- `ticket-assignments`: Used for ticket assignment events
+- `ticket-updates`: Used for ticket update events
+- `ticket-created`: Used for ticket creation events
+
+## Building Individual Services
+
+If you want to build and run individual services:
+
+```bash
+# Build a specific service
+docker build -t ticket-api-gateway-service -f ticket-api-gateway-service/Dockerfile .
+docker build -t ticket-management-service -f ticket-management-service/Dockerfile .
+docker build -t agent-assignment-service -f agent-assignment-service/Dockerfile .
+
+# Run a specific service
+docker run -p 8080:8080 ticket-api-gateway-service
+docker run -p 8081:8081 ticket-management-service
+docker run -p 8082:8082 agent-assignment-service
+```
+
+## Stopping the Services
+
+To stop and remove all containers:
+
+```bash
+docker-compose down
+```
+
+To stop and remove all containers including volumes:
+
+```bash
+docker-compose down -v
+```
+
+## Development
+
+For local development without Docker:
+
+```bash
+# Run the application using Maven
+./mvnw spring-boot:run -pl ticket-api-gateway-service
+./mvnw spring-boot:run -pl ticket-management-service
+./mvnw spring-boot:run -pl agent-assignment-service
+```
+
+Make sure you have Kafka running locally on port 9092 if you're developing without Docker.

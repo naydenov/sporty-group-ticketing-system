@@ -1,0 +1,70 @@
+## Docker Setup for Sporty Group Ticketing System
+
+This project uses multi-stage Dockerfiles for each microservice, targeting Java 17 (Eclipse Temurin images) and leveraging Maven for builds. All services are orchestrated via Docker Compose, which also provisions Kafka and Zookeeper for inter-service messaging.
+
+### Project-Specific Requirements
+- **Java Version:** All services require Java 17 (Eclipse Temurin base images).
+- **Kafka & Zookeeper:** Kafka (on port 9092) and Zookeeper (on port 2181) are required and included in the `docker-compose.yml`.
+- **H2 Database:** Each service uses an in-memory H2 database (no persistent storage required).
+
+### Environment Variables
+Each service sets sensible defaults for environment variables, which can be overridden at runtime:
+
+- **Ticket API Gateway Service**
+  - `SPRING_PROFILES_ACTIVE` (default: `docker`)
+  - `SERVER_PORT` (default: `8080`)
+  - `SPRING_KAFKA_BOOTSTRAP_SERVERS` (default: `kafka:9092`)
+
+- **Ticket Management Service**
+  - `SPRING_PROFILES_ACTIVE` (default: `docker`)
+  - `SERVER_PORT` (default: `8081`)
+  - `SPRING_KAFKA_BOOTSTRAP_SERVERS` (default: `kafka:9092`)
+  - `SPRING_DATASOURCE_URL` (default: `jdbc:h2:mem:ticketdb`)
+  - `SPRING_DATASOURCE_USERNAME` (default: `sa`)
+  - `SPRING_DATASOURCE_PASSWORD` (default: `password`)
+
+- **Agent Assignment Service**
+  - `SPRING_PROFILES_ACTIVE` (default: `docker`)
+  - `SERVER_PORT` (default: `8082`)
+  - `SPRING_KAFKA_BOOTSTRAP_SERVERS` (default: `kafka:9092`)
+  - `SPRING_DATASOURCE_URL` (default: `jdbc:h2:mem:agents-db`)
+  - `SPRING_DATASOURCE_USERNAME` (default: `sa`)
+  - `SPRING_DATASOURCE_PASSWORD` (default: empty)
+
+You can override these by creating `.env` files in each service directory and uncommenting the `env_file` lines in `docker-compose.yml`.
+
+### Exposed Ports
+- **Ticket API Gateway Service:** 8080
+- **Ticket Management Service:** 8081
+- **Agent Assignment Service:** 8082
+- **Kafka:** 9092
+- **Zookeeper:** 2181
+
+### Building and Running the Project
+To build and start all services, simply run:
+
+```bash
+docker-compose up -d
+```
+
+This will build the Docker images for each service (using the multi-stage Dockerfiles) and start all containers, including Kafka and Zookeeper. All services are connected via the `app-net` Docker network for internal communication.
+
+To stop and remove all containers:
+
+```bash
+docker-compose down
+```
+
+To remove containers and associated volumes:
+
+```bash
+docker-compose down -v
+```
+
+### Special Configuration Notes
+- **Kafka and Zookeeper** are required for service communication and are automatically started by Docker Compose.
+- **H2 Databases** are in-memory and do not persist data between restarts.
+- **Non-root User:** Each service runs as a non-root user for improved security.
+- **Custom Environment:** If you need to customize environment variables, use `.env` files in each service directory and update `docker-compose.yml` accordingly.
+
+For more details on service endpoints and usage, see the sections above.

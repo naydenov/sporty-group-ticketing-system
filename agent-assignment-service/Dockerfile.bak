@@ -1,0 +1,41 @@
+FROM eclipse-temurin:17-jdk-alpine as build
+WORKDIR /workspace/app
+
+COPY mvnw .
+COPY .mvn .mvn
+COPY pom.xml .
+COPY agent-assignment-service/pom.xml agent-assignment-service/pom.xml
+
+# Make mvnw executable
+RUN chmod +x ./mvnw
+
+# Build all dependencies to leverage Docker cache
+RUN ./mvnw dependency:go-offline -B -pl agent-assignment-service
+
+# Copy source code
+COPY agent-assignment-service/src agent-assignment-service/src
+
+# Build the application
+RUN ./mvnw package -DskipTests -pl agent-assignment-service
+
+FROM eclipse-temurin:17-jre-alpine
+WORKDIR /app
+
+# Create a non-root user to run the application
+RUN addgroup -S spring && adduser -S spring -G spring
+USER spring:spring
+
+# Copy the built jar file
+COPY --from=build /workspace/app/agent-assignment-service/target/*.jar app.jar
+
+# Set environment variables
+ENV SPRING_PROFILES_ACTIVE=docker
+ENV SERVER_PORT=8082
+ENV SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+ENV SPRING_DATASOURCE_URL=jdbc:h2:mem:agents-db
+ENV SPRING_DATASOURCE_USERNAME=sa
+ENV SPRING_DATASOURCE_PASSWORD=
+
+EXPOSE 8082
+
+ENTRYPOINT ["java", "-jar", "app.jar"]

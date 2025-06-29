@@ -1,0 +1,38 @@
+FROM eclipse-temurin:17-jdk-alpine as build
+WORKDIR /workspace/app
+
+COPY mvnw .
+COPY .mvn .mvn
+COPY pom.xml .
+COPY ticket-api-gateway-service/pom.xml ticket-api-gateway-service/pom.xml
+
+# Make mvnw executable
+RUN chmod +x ./mvnw
+
+# Build all dependencies to leverage Docker cache
+RUN ./mvnw dependency:go-offline -B -pl ticket-api-gateway-service
+
+# Copy source code
+COPY ticket-api-gateway-service/src ticket-api-gateway-service/src
+
+# Build the application
+RUN ./mvnw package -DskipTests -pl ticket-api-gateway-service
+
+FROM eclipse-temurin:17-jre-alpine
+WORKDIR /app
+
+# Create a non-root user to run the application
+RUN addgroup -S spring && adduser -S spring -G spring
+USER spring:spring
+
+# Copy the built jar file
+COPY --from=build /workspace/app/ticket-api-gateway-service/target/*.jar app.jar
+
+# Set environment variables
+ENV SPRING_PROFILES_ACTIVE=docker
+ENV SERVER_PORT=8080
+ENV SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+
+EXPOSE 8080
+
+ENTRYPOINT ["java", "-jar", "app.jar"]

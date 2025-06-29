@@ -1,0 +1,77 @@
+# 1. Version control
+.git/
+.gitignore
+.gitattributes
+.svn/
+.hg/
+
+# 2. IDE/editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# 3. Java build outputs
+**/target/
+*.class
+
+# 4. General build outputs
+build/
+dist/
+out/
+
+# 5. Test and debug artifacts
+test/
+tests/
+debug/
+*.log
+
+# 6. Documentation and markdown
+*.md
+README*
+docs/
+
+# 7. Docker and Compose files
+Dockerfile*
+docker-compose*
+
+# 8. Backup and temporary files
+*.bak
+*.tmp
+tmp/
+temp/
+
+# 9. Environment and secrets
+.env*
+*.env
+*.pem
+*.key
+*.crt
+config.local.*
+*.local.yml
+.local/
+local/
+
+# 10. Node.js, Python, Go (for completeness, even if not detected)
+node_modules/
+npm-debug.log
+yarn-debug.log
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.coverage
+/vendor/
+*.test
+.go-cache/
+
+# 11. Project-specific exclusions
+.junie/
+
+# 12. Exclude other service's .dockerignore files
+**/.dockerignore
+
+# 13. Exclude Maven wrapper scripts (but NOT .mvn/)
+# (Explicitly do NOT ignore mvnw, mvnw.cmd, .mvn/ as per instructions)
+
+# End of .dockerignore
