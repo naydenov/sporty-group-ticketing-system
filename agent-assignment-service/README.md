@@ -160,17 +160,9 @@ The H2 console is enabled and available at: http://localhost:8082/h2-console
 - Username: `sa`
 - Password: (empty)
 
-## AI Tool Usage and Validation
-
-This service does not currently use AI tools for code generation or validation. All code is manually written and tested.
-
 ### Validation Steps
 1. Unit tests verify individual components
 2. Integration tests verify service interactions with Kafka
 3. Manual testing with API endpoints
 4. Docker Compose ensures consistent deployment environment
 
-### Future AI Integration Possibilities
-- Intelligent agent assignment based on ticket content and agent skills
-- Workload balancing using predictive analytics
-- Agent performance monitoring and optimization

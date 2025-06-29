@@ -126,17 +126,8 @@ http://localhost:8080/api-docs
 
 You can import this JSON into tools like Postman for API testing.
 
-## AI Tool Usage and Validation
-
-This service does not currently use AI tools for code generation or validation. All code is manually written and tested.
-
 ### Validation Steps
 1. Unit tests verify individual components
 2. Integration tests verify service interactions with Kafka
 3. Manual testing with Swagger UI
 4. Docker Compose ensures consistent deployment environment
-
-### Future AI Integration Possibilities
-- Ticket categorization based on content analysis
-- Automatic priority assignment based on text sentiment
-- Spam detection for ticket submissions
