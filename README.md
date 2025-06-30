@@ -280,3 +280,9 @@ The correctness and functionality of the system, including aspects influenced by
 3.  **Manual Testing with Swagger UI:** Direct interaction with the API Gateway via Swagger UI (if enabled) allows for quick manual verification of endpoint functionality.
 
 4.  **Docker Compose Deployment:** The use of Docker Compose ensures a consistent and reproducible deployment environment, helping to validate that the application runs correctly in a containerized setup.
+
+## 7. Ticketing system services
+
+* **System Architecture Diagram:** The following diagram illustrates the architecture and interaction between the different services in the Sporty Group Ticketing System:
+
+![Sporty Group Ticketing System Architecture](sporty_group_ticketing_system.jpg)
