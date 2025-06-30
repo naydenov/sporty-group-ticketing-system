@@ -20,10 +20,10 @@ public class TicketConsumerService {
 
     private final TicketRepository ticketRepository;
 
-    @KafkaListener(topics = KafkaConfig.TICKET_CREATED_TOPIC, groupId = "${spring.kafka.consumer.group-id}")
+    @KafkaListener(topics = KafkaConfig.TICKET_CREATED_TOPIC, groupId = "${spring.kafka.consumer.group-id}", containerFactory = "newTicketKafkaListenerContainerFactory")
     public void consumeNewTicketEvent(NewTicketEvent event) {
         log.info("Received new ticket event: {}", event);
-        
+
         try {
             Ticket ticket = new Ticket();
             ticket.setTicketId(UUID.fromString(event.getTicketId()));
@@ -31,7 +31,7 @@ public class TicketConsumerService {
             ticket.setDescription(event.getDescription());
             ticket.setStatus(Ticket.TicketStatus.valueOf(event.getStatus().toUpperCase()));
             ticket.setUserId(event.getUserId());
-            
+
             // Parse createdAt if provided
             if (event.getCreatedAt() != null && !event.getCreatedAt().isEmpty()) {
                 try {
@@ -45,7 +45,7 @@ public class TicketConsumerService {
             } else {
                 ticket.setCreatedAt(LocalDateTime.now());
             }
-            
+
             ticketRepository.save(ticket);
             log.info("Saved new ticket with ID: {}", ticket.getTicketId());
         } catch (Exception e) {
