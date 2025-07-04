@@ -1,8 +1,8 @@
 package com.sporty.group.ticketmanagementservice.integration;
 
+import com.sporty.group.sportygroupticketingcommons.event.NewTicketEvent;
+import com.sporty.group.sportygroupticketingcommons.event.TicketCreatedEvent;
 import com.sporty.group.ticketmanagementservice.model.Ticket;
-import com.sporty.group.ticketmanagementservice.model.event.NewTicketEvent;
-import com.sporty.group.ticketmanagementservice.model.event.TicketCreatedEvent;
 import org.junit.jupiter.api.Test;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 
@@ -22,7 +22,7 @@ class TicketCreationIntegrationTest extends BaseIntegrationTest {
         String subject = "Integration Test Subject";
         String description = "Integration Test Description";
         
-        TicketCreatedEvent event = new TicketCreatedEvent(userId, subject, description);
+        TicketCreatedEvent event = TicketCreatedEvent.builder().userId(userId).subject(subject).description(description).build();
         
         // When: Send the event to Kafka
         ticketCreatedKafkaTemplate.send(supportTicketsTopic, event);

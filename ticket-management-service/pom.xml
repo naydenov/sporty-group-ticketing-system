@@ -11,19 +11,6 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>ticket-management-service</name>
     <description>ticket-management-service</description>
-    <url/>
-    <licenses>
-        <license/>
-    </licenses>
-    <developers>
-        <developer/>
-    </developers>
-    <scm>
-        <connection/>
-        <developerConnection/>
-        <tag/>
-        <url/>
-    </scm>
     <dependencies>
         <!-- Module-specific dependencies -->
         <dependency>
@@ -33,6 +20,11 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.sporty.group</groupId>
+            <artifactId>sporty-group-ticketing-commons</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>

@@ -1,10 +1,10 @@
 package com.sporty.group.ticketmanagementservice.integration;
 
+import com.sporty.group.sportygroupticketingcommons.event.NewTicketEvent;
+import com.sporty.group.sportygroupticketingcommons.event.TicketAssignedEvent;
+import com.sporty.group.sportygroupticketingcommons.event.TicketCreatedEvent;
+import com.sporty.group.sportygroupticketingcommons.event.TicketStatusUpdatedEvent;
 import com.sporty.group.ticketmanagementservice.config.TestKafkaConfig;
-import com.sporty.group.ticketmanagementservice.model.event.NewTicketEvent;
-import com.sporty.group.ticketmanagementservice.model.event.TicketAssignedEvent;
-import com.sporty.group.ticketmanagementservice.model.event.TicketCreatedEvent;
-import com.sporty.group.ticketmanagementservice.model.event.TicketStatusUpdatedEvent;
 import com.sporty.group.ticketmanagementservice.repository.TicketRepository;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;

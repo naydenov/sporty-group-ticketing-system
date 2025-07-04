@@ -1,10 +1,10 @@
 package com.sporty.group.ticketmanagementservice.service;
 
+import com.sporty.group.sportygroupticketingcommons.event.NewTicketEvent;
 import com.sporty.group.ticketmanagementservice.model.Ticket;
-import com.sporty.group.ticketmanagementservice.model.event.NewTicketEvent;
-import com.sporty.group.ticketmanagementservice.model.event.TicketAssignedEvent;
-import com.sporty.group.ticketmanagementservice.model.event.TicketCreatedEvent;
-import com.sporty.group.ticketmanagementservice.model.event.TicketStatusUpdatedEvent;
+import com.sporty.group.sportygroupticketingcommons.event.TicketAssignedEvent;
+import com.sporty.group.sportygroupticketingcommons.event.TicketCreatedEvent;
+import com.sporty.group.sportygroupticketingcommons.event.TicketStatusUpdatedEvent;
 import com.sporty.group.ticketmanagementservice.repository.TicketRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -51,7 +51,7 @@ class TicketServiceTest {
     @Test
     void processTicketCreated_shouldCreateTicketAndSendEvent() {
         // Given
-        TicketCreatedEvent event = new TicketCreatedEvent("user-001", "Test Subject", "Test Description");
+        TicketCreatedEvent event = TicketCreatedEvent.builder().userId("user-001").subject("Test Subject").description("Test Description").build();
 
         // When
         ticketService.processTicketCreated(event);

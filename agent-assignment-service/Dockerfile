@@ -26,20 +26,22 @@ COPY --link pom.xml ./
 # Give execution rights to the Maven wrapper script.
 RUN chmod +x mvnw
 
+# Copy the built JAR of the common module into the Maven local repository
+COPY --from=build /app/sporty-group-ticketing-commons/target/sporty-group-ticketing-commons-*.jar \
+     /root/.m2/repository/com/sporty/group/sporty-group-ticketing-commons/0.0.1-SNAPSHOT/sporty-group-ticketing-commons-0.0.1-SNAPSHOT.jar
+
 # Copy ALL module directories into the build context inside the container.
 # This is crucial for Maven to correctly resolve the multi-module project structure
 # when running commands like 'dependency:go-offline' on the parent POM,
 # as it needs all declared modules to be present.
 COPY --link agent-assignment-service ./agent-assignment-service
-COPY --link ticket-api-gateway-service ./ticket-api-gateway-service
-COPY --link ticket-management-service ./ticket-management-service
 
 # Run 'dependency:go-offline' on the parent project.
 # Now that all modules are present, this command should succeed in building the project model.
 # This downloads all project dependencies (including those managed by the parent)
 # into the local Maven repository within the container, leveraging Docker's layer caching.
 # '-f pom.xml' ensures the command is executed against the parent POM.
-RUN ./mvnw dependency:go-offline -f pom.xml
+RUN ./mvnw dependency:go-offline -B
 
 # Build the specific application module.
 # 'clean install': Cleans the project and installs the artifacts into the local Maven repository.

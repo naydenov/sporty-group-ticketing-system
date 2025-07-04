@@ -1,8 +1,8 @@
 package com.sporty.group.ticketmanagementservice.listener;
 
-import com.sporty.group.ticketmanagementservice.model.event.TicketAssignedEvent;
-import com.sporty.group.ticketmanagementservice.model.event.TicketCreatedEvent;
-import com.sporty.group.ticketmanagementservice.model.event.TicketStatusUpdatedEvent;
+import com.sporty.group.sportygroupticketingcommons.event.TicketAssignedEvent;
+import com.sporty.group.sportygroupticketingcommons.event.TicketCreatedEvent;
+import com.sporty.group.sportygroupticketingcommons.event.TicketStatusUpdatedEvent;
 import com.sporty.group.ticketmanagementservice.service.TicketService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,7 +30,7 @@ class KafkaEventListenerTest {
     @Test
     void listenTicketCreated_shouldDelegateToTicketService() {
         // Given
-        TicketCreatedEvent event = new TicketCreatedEvent("user-001", "Test Subject", "Test Description");
+        TicketCreatedEvent event =  TicketCreatedEvent.builder().userId("user-001").subject("Test Subject").description("Test Description").build();
 
         // When
         kafkaEventListener.listenTicketCreated(event);

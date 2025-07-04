@@ -3,11 +3,12 @@ package com.sporty.group.agentassignmentservice.integration;
 import com.sporty.group.agentassignmentservice.config.KafkaConfig;
 import com.sporty.group.agentassignmentservice.model.entity.Agent;
 import com.sporty.group.agentassignmentservice.model.entity.Ticket;
-import com.sporty.group.agentassignmentservice.model.event.NewTicketEvent;
-import com.sporty.group.agentassignmentservice.model.event.TicketAssignedEvent;
 import com.sporty.group.agentassignmentservice.repository.AgentRepository;
 import com.sporty.group.agentassignmentservice.repository.TicketRepository;
 import com.sporty.group.agentassignmentservice.service.TicketService;
+import com.sporty.group.sportygroupticketingcommons.event.NewTicketEvent;
+import com.sporty.group.sportygroupticketingcommons.event.TicketAssignedEvent;
+import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -24,8 +25,6 @@ import org.springframework.kafka.listener.KafkaMessageListenerContainer;
 import org.springframework.kafka.listener.MessageListener;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
-import org.springframework.kafka.test.EmbeddedKafkaBroker;
-import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.kafka.test.utils.ContainerTestUtils;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
 
@@ -33,6 +32,7 @@ import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
+import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -61,8 +61,11 @@ class KafkaIntegrationTest extends AbstractIntegrationTest {
         String brokers = environment.getProperty("spring.embedded.kafka.brokers");
 
         // Set up Kafka consumer for ticket-assignments topic
-        Map<String, Object> consumerProps = KafkaTestUtils.consumerProps(
-                "test-group", "true", brokers);
+        Map<String, Object> consumerProps = new HashMap<>();
+        consumerProps.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, brokers);
+        consumerProps.put(ConsumerConfig.GROUP_ID_CONFIG, "test-group");
+        consumerProps.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, true);
+        consumerProps.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
         DefaultKafkaConsumerFactory<String, TicketAssignedEvent> cf = new DefaultKafkaConsumerFactory<>(
                 consumerProps, new StringDeserializer(),
                 new JsonDeserializer<>(TicketAssignedEvent.class, false));

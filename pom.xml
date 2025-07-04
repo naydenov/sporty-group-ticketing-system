@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.3</version>
+        <version>3.2.3</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.sporty.group</groupId>
@@ -28,9 +28,10 @@
         <url/>
     </scm>
 	    <modules>
-        <module>ticket-api-gateway-service</module>
-        <module>ticket-management-service</module>
-        <module>agent-assignment-service</module>
+            <module>sporty-group-ticketing-commons</module>
+            <module>ticket-api-gateway-service</module>
+            <module>ticket-management-service</module>
+            <module>agent-assignment-service</module>
     </modules>
     <properties>
         <java.version>17</java.version>
@@ -112,6 +113,7 @@
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>

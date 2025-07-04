@@ -1,5 +1,6 @@
 package com.sporty.group.ticketapigatewayservice.model;
 
+import com.sporty.group.sportygroupticketingcommons.model.Ticket;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;

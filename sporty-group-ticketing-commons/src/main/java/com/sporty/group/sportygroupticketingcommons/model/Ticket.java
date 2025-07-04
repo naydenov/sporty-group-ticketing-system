@@ -1,4 +1,4 @@
-package com.sporty.group.ticketapigatewayservice.model;
+package com.sporty.group.sportygroupticketingcommons.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

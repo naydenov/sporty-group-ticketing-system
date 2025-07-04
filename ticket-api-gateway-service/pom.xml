@@ -30,6 +30,11 @@
     <dependencies>
         <!-- Module-specific dependencies -->
         <dependency>
+            <groupId>com.sporty.group</groupId>
+            <artifactId>sporty-group-ticketing-commons</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-testcontainers</artifactId>
             <scope>test</scope>

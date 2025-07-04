@@ -1,7 +1,7 @@
 package com.sporty.group.agentassignmentservice.service;
 
 import com.sporty.group.agentassignmentservice.config.KafkaConfig;
-import com.sporty.group.agentassignmentservice.model.event.TicketAssignedEvent;
+import com.sporty.group.sportygroupticketingcommons.event.TicketAssignedEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;

@@ -1,5 +1,6 @@
 package com.sporty.group.ticketmanagementservice.model.event;
 
+import com.sporty.group.sportygroupticketingcommons.event.TicketStatusUpdatedEvent;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;

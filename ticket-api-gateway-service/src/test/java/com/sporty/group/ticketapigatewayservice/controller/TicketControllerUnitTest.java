@@ -2,7 +2,7 @@ package com.sporty.group.ticketapigatewayservice.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sporty.group.ticketapigatewayservice.dto.TicketRequest;
-import com.sporty.group.ticketapigatewayservice.model.Ticket;
+import com.sporty.group.sportygroupticketingcommons.model.Ticket;
 import com.sporty.group.ticketapigatewayservice.service.TicketService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

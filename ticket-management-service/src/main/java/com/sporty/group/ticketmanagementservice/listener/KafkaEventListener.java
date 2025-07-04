@@ -1,8 +1,8 @@
 package com.sporty.group.ticketmanagementservice.listener;
 
-import com.sporty.group.ticketmanagementservice.model.event.TicketAssignedEvent;
-import com.sporty.group.ticketmanagementservice.model.event.TicketCreatedEvent;
-import com.sporty.group.ticketmanagementservice.model.event.TicketStatusUpdatedEvent;
+import com.sporty.group.sportygroupticketingcommons.event.TicketAssignedEvent;
+import com.sporty.group.sportygroupticketingcommons.event.TicketCreatedEvent;
+import com.sporty.group.sportygroupticketingcommons.event.TicketStatusUpdatedEvent;
 import com.sporty.group.ticketmanagementservice.service.TicketService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

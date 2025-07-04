@@ -1,8 +1,8 @@
 package com.sporty.group.agentassignmentservice.service;
 
 import com.sporty.group.agentassignmentservice.model.entity.Ticket;
-import com.sporty.group.agentassignmentservice.model.event.NewTicketEvent;
 import com.sporty.group.agentassignmentservice.repository.TicketRepository;
+import com.sporty.group.sportygroupticketingcommons.event.NewTicketEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,9 +11,6 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;

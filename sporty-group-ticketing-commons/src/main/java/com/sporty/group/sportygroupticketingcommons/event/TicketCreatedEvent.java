@@ -1,6 +1,6 @@
-package com.sporty.group.ticketapigatewayservice.event;
+package com.sporty.group.sportygroupticketingcommons.event;
 
-import com.sporty.group.ticketapigatewayservice.model.Ticket;
+import com.sporty.group.sportygroupticketingcommons.model.Ticket;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,6 +9,10 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+/**
+ * Event representing a new ticket creation request.
+ * This event is consumed from the 'support-tickets' topic.
+ */
 @Data
 @Builder
 @NoArgsConstructor
