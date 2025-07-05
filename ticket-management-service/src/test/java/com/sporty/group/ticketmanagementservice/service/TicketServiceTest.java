@@ -73,6 +73,7 @@ class TicketServiceTest {
         
         assertEquals(savedTicket.getTicketId().toString(), sentEvent.getTicketId());
         assertEquals("open", sentEvent.getStatus());
+        assertEquals("user-001", sentEvent.getUserId());
         assertEquals("Test Subject", sentEvent.getSubject());
         assertEquals("Test Description", sentEvent.getDescription());
         assertEquals(savedTicket.getCreatedAt().format(DATE_FORMATTER), sentEvent.getCreatedAt());

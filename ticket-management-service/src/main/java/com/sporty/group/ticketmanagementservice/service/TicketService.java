@@ -63,6 +63,7 @@ public class TicketService {
         NewTicketEvent newTicketEvent = NewTicketEvent.builder()
                 .ticketId(ticketId.toString())
                 .status(ticket.getStatus().name().toLowerCase())
+                .userId(ticket.getUserId())
                 .subject(ticket.getSubject())
                 .description(ticket.getDescription())
                 .createdAt(ticket.getCreatedAt().format(DATE_FORMATTER))

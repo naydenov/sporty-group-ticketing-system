@@ -1,56 +1,92 @@
+version: '3.8' # Specify the Docker Compose file format version
+
+# Define the networks that containers will use for communication
 networks:
-  app-net:
-    driver: bridge
+  app-net: # Standardized on 'app-net' for all services
+    driver: bridge # Use a bridge network for internal communication
 
+# Define the services (containers) that make up your application
 services:
-  agent-assignment-service:
-    build:
-      context: .
-      dockerfile: ./agent-assignment-service/Dockerfile
-    container_name: agent-assignment-service
+  # Spring Boot Service: Agent Assignment Service
+  # Image will be built by maven-jib-plugin
+  java-agent-assignment-service:
+    image: sporty-group/agent-assignment-service:0.0.1-SNAPSHOT # Replace with your actual Jib-built image name and version
+    container_name: java-agent-assignment-service
     restart: unless-stopped
     init: true
     networks:
       - app-net
     ports:
-      - "8082:8082"
-    depends_on:
-      - kafka
-    # env_file: ./agent-assignment-service/.env  # Uncomment if .env file exists
-    # Runs as non-root user, see Dockerfile for details
+      - "8082:8082" # Mapped to host port 8082
+    environment:
+      - SERVER_PORT=8082
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - SPRING_DATASOURCE_URL=jdbc:h2:mem:agents-db
+      - SPRING_DATASOURCE_USERNAME=sa
+      - SPRING_DATASOURCE_PASSWORD=password
+    depends_on: # Ensure Kafka is ready and topics are initialized
+      kafka-init:
+        condition: service_completed_successfully
+    healthcheck: # Generic healthcheck for Spring Boot
+      test: ["CMD", "curl", "-f", "http://localhost:8082/actuator/health"] # Assuming Spring Boot Actuator
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
 
-  ticket-api-gateway-service:
-    build:
-      context: .
-      dockerfile: ./ticket-api-gateway-service/Dockerfile
-    container_name: ticket-api-gateway-service
+  # Spring Boot Service: Ticket API Gateway Service
+  # Image will be built by maven-jib-plugin
+  java-ticket-api-gateway-service:
+    image: sporty-group/ticket-api-gateway-service:0.0.1-SNAPSHOT # Replace with your actual Jib-built image name and version
+    container_name: java-ticket-api-gateway-service
     restart: unless-stopped
     init: true
     networks:
       - app-net
     ports:
-      - "8080:8080"
-    depends_on:
-      - kafka
-    # env_file: ./ticket-api-gateway-service/.env  # Uncomment if .env file exists
+      - "8080:8080" # Mapped to host port 8080
+    environment:
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+    depends_on: # Ensure Kafka is ready and topics are initialized
+      kafka-init:
+        condition: service_completed_successfully
+    healthcheck: # Generic healthcheck for Spring Boot
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"] # Assuming Spring Boot Actuator
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
 
-  ticket-management-service:
-    build:
-      context: .
-      dockerfile: ./ticket-management-service/Dockerfile
-    container_name: ticket-management-service
+  # Spring Boot Service: Ticket Management Service
+  # Image will be built by maven-jib-plugin
+  java-ticket-management-service:
+    image: sporty-group/ticket-management-service:0.0.1-SNAPSHOT # Replace with your actual Jib-built image name and version
+    container_name: java-ticket-management-service
     restart: unless-stopped
     init: true
     networks:
       - app-net
     ports:
-      - "8081:8081"
-    depends_on:
-      - kafka
-    # env_file: ./ticket-management-service/.env  # Uncomment if .env file exists
+      - "8081:8081" # Mapped to host port 8081
+    environment:
+      - SERVER_PORT=8081
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - SPRING_DATASOURCE_URL=jdbc:h2:mem:ticketdb
+      - SPRING_DATASOURCE_USERNAME=sa
+      - SPRING_DATASOURCE_PASSWORD=password
+    depends_on: # Ensure Kafka is ready and topics are initialized
+      kafka-init:
+        condition: service_completed_successfully
+    healthcheck: # Kept and aligned with its original healthcheck
+      test: ["CMD", "curl", "-f", "http://localhost:8081/swagger-ui.html"] # Or /actuator/health
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
 
+  # Apache Zookeeper Service (required for Kafka)
   zookeeper:
-    image: confluentinc/cp-zookeeper:7.8.3
+    image: confluentinc/cp-zookeeper:7.8.3 # Consistent image version
     container_name: zookeeper
     restart: unless-stopped
     networks:
@@ -60,14 +96,16 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
-    healthcheck:
+    healthcheck: # Healthcheck to ensure Zookeeper is ready
       test: ["CMD", "echo", "ruok", "|", "nc", "localhost", "2181"]
       interval: 10s
       timeout: 5s
       retries: 5
+      start_period: 10s
 
+  # Apache Kafka Service (message broker)
   kafka:
-    image: confluentinc/cp-kafka:7.8.3
+    image: confluentinc/cp-kafka:7.8.3 # Consistent image version
     container_name: kafka
     restart: unless-stopped
     networks:
@@ -75,7 +113,8 @@ services:
     ports:
       - "9092:9092"
     depends_on:
-      - zookeeper
+      zookeeper:
+        condition: service_healthy # Ensure Zookeeper is healthy before Kafka starts
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
@@ -84,14 +123,49 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-    healthcheck:
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+    healthcheck: # Healthcheck to ensure Kafka is ready
       test: ["CMD", "kafka-topics", "--bootstrap-server", "localhost:9092", "--list"]
-      interval: 10s
+      interval: 30s
       timeout: 10s
       retries: 10
+      start_period: 30s
 
-# Notes:
-# - Each service runs as a non-root user (see Dockerfile for details).
-# - H2 databases are in-memory and do not require persistent volumes.
-# - Kafka and Zookeeper are required for inter-service messaging.
-# - Uncomment the env_file lines if you add .env files to the service directories.
+  # Kafka Topic Initialization Service
+  kafka-init:
+    image: confluentinc/cp-kafka:7.8.3 # Consistent image version
+    container_name: kafka-init
+    depends_on:
+      kafka:
+        condition: service_healthy # Ensure Kafka is healthy before creating topics
+    networks:
+      - app-net
+    command: > # Command to wait for Kafka and create topics
+      bash -c "
+        echo 'Waiting for Kafka to be ready...' &&
+        cub kafka-ready -b kafka:9092 1 120 &&
+        echo 'Creating Kafka topics...' &&
+        kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic support-tickets --partitions 1 --replication-factor 1 &&
+        kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic ticket-assignments --partitions 1 --replication-factor 1 &&
+        kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic ticket-updates --partitions 1 --replication-factor 1 &&
+        kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic ticket-created --partitions 1 --replication-factor 1 &&
+        echo 'Kafka topics created.'
+      "
+    # This service is designed to run once and exit successfully.
+
+  # Kafka UI for monitoring and management (optional but useful)
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest # Using 'latest' as it was in one of your files
+    container_name: kafka-ui
+    ports:
+      - "9000:8080" # Mapped to host port 9000 to avoid conflict with API Gateway (8080)
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+      KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
+    depends_on:
+      kafka:
+        condition: service_healthy # Ensure Kafka is healthy
+    networks:
+      - app-net
+    restart: unless-stopped

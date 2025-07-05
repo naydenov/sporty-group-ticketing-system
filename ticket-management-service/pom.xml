@@ -27,4 +27,40 @@
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>3.4.0</version>
+                <configuration>
+                    <from>
+                        <image>eclipse-temurin:17-jre</image>
+                    </from>
+                    <to>
+                        <image>sporty-group/ticket-management-service:${project.version}</image>
+                    </to>
+                    <container>
+                        <ports>
+                            <port>8081</port>
+                        </ports>
+                        <environment>
+                            <SPRING_PROFILES_ACTIVE>docker</SPRING_PROFILES_ACTIVE>
+                            <SERVER_PORT>8081</SERVER_PORT>
+                            <SPRING_KAFKA_BOOTSTRAP_SERVERS>kafka:9092</SPRING_KAFKA_BOOTSTRAP_SERVERS>
+                            <SPRING_DATASOURCE_URL>jdbc:h2:mem:tickets-db</SPRING_DATASOURCE_URL>
+                            <SPRING_DATASOURCE_USERNAME>sa</SPRING_DATASOURCE_USERNAME>
+                            <SPRING_DATASOURCE_PASSWORD>password</SPRING_DATASOURCE_PASSWORD>
+                        </environment>
+                        <jvmFlags>
+                            <jvmFlag>-XX:MaxRAMPercentage=80.0</jvmFlag>
+                            <jvmFlag>-Djava.security.egd=file:/dev/./urandom</jvmFlag>
+                        </jvmFlags>
+                        <user>1000</user>
+                    </container>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

@@ -14,24 +14,11 @@
     <packaging>pom</packaging>
     <name>sporty-group-ticketing-system</name>
     <description>sporty-group-ticketing-system</description>
-    <url/>
-    <licenses>
-        <license/>
-    </licenses>
-    <developers>
-        <developer/>
-    </developers>
-    <scm>
-        <connection/>
-        <developerConnection/>
-        <tag/>
-        <url/>
-    </scm>
-	    <modules>
-            <module>sporty-group-ticketing-commons</module>
-            <module>ticket-api-gateway-service</module>
-            <module>ticket-management-service</module>
-            <module>agent-assignment-service</module>
+    <modules>
+        <module>sporty-group-ticketing-commons</module>
+        <module>ticket-api-gateway-service</module>
+        <module>ticket-management-service</module>
+        <module>agent-assignment-service</module>
     </modules>
     <properties>
         <java.version>17</java.version>
