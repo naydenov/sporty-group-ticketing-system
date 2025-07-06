@@ -11,19 +11,6 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>agent-assignment-service</name>
     <description>agent-assignment-service</description>
-    <url/>
-    <licenses>
-        <license/>
-    </licenses>
-    <developers>
-        <developer/>
-    </developers>
-    <scm>
-        <connection/>
-        <developerConnection/>
-        <tag/>
-        <url/>
-    </scm>
     <!-- No module-specific properties needed -->
     <dependencies>
         <!-- Module-specific dependencies -->
