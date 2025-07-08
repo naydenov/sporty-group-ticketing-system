@@ -1,6 +1,6 @@
 package com.sporty.group.agentassignmentservice.config;
 
-import com.sporty.group.agentassignmentservice.model.event.NewTicketEvent;
+import com.sporty.group.sportygroupticketingcommons.event.NewTicketEvent;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,7 +34,6 @@ public class KafkaConsumerConfig {
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
         props.put(ErrorHandlingDeserializer.VALUE_DESERIALIZER_CLASS, JsonDeserializer.class);
         props.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
-        props.put(JsonDeserializer.TYPE_MAPPINGS, "com.sporty.group.ticketmanagementservice.model.event.NewTicketEvent:com.sporty.group.agentassignmentservice.model.event.NewTicketEvent");
         return props;
     }
 

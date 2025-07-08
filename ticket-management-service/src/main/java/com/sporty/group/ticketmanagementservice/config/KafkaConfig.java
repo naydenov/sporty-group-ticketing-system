@@ -1,9 +1,10 @@
 package com.sporty.group.ticketmanagementservice.config;
 
-import com.sporty.group.ticketmanagementservice.model.event.NewTicketEvent;
-import com.sporty.group.ticketmanagementservice.model.event.TicketAssignedEvent;
-import com.sporty.group.ticketmanagementservice.model.event.TicketCreatedEvent;
-import com.sporty.group.ticketmanagementservice.model.event.TicketStatusUpdatedEvent;
+
+import com.sporty.group.sportygroupticketingcommons.event.NewTicketEvent;
+import com.sporty.group.sportygroupticketingcommons.event.TicketAssignedEvent;
+import com.sporty.group.sportygroupticketingcommons.event.TicketCreatedEvent;
+import com.sporty.group.sportygroupticketingcommons.event.TicketStatusUpdatedEvent;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -36,7 +37,7 @@ public class KafkaConfig {
         props.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
-        props.put(JsonDeserializer.TRUSTED_PACKAGES, "com.sporty.group.ticketmanagementservice.model.event");
+        props.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
         return props;
     }
 

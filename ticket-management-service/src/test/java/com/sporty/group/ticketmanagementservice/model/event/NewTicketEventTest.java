@@ -1,5 +1,6 @@
 package com.sporty.group.ticketmanagementservice.model.event;
 
+import com.sporty.group.sportygroupticketingcommons.event.NewTicketEvent;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
@@ -57,7 +58,7 @@ class NewTicketEventTest {
         String createdAt = "15.03.2025";
 
         // When
-        NewTicketEvent event = new NewTicketEvent(ticketId, status, subject, description, createdAt);
+        NewTicketEvent event = NewTicketEvent.builder().ticketId(ticketId).status(status).subject(subject).description(description).createdAt(createdAt).build();
 
         // Then
         assertEquals(ticketId, event.getTicketId());

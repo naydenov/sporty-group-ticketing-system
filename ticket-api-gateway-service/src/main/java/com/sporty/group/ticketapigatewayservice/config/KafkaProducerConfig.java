@@ -1,6 +1,7 @@
 package com.sporty.group.ticketapigatewayservice.config;
 
-import com.sporty.group.ticketapigatewayservice.event.TicketCreatedEvent;
+
+import com.sporty.group.sportygroupticketingcommons.event.TicketCreatedEvent;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;

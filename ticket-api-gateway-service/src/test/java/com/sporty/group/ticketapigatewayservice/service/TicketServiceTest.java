@@ -1,8 +1,8 @@
 package com.sporty.group.ticketapigatewayservice.service;
 
+import com.sporty.group.sportygroupticketingcommons.event.TicketCreatedEvent;
 import com.sporty.group.ticketapigatewayservice.dto.TicketRequest;
-import com.sporty.group.ticketapigatewayservice.event.TicketCreatedEvent;
-import com.sporty.group.ticketapigatewayservice.model.Ticket;
+import com.sporty.group.sportygroupticketingcommons.model.Ticket;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,11 +13,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.kafka.core.KafkaTemplate;
 
-import java.util.UUID;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)

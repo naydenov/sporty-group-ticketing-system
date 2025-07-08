@@ -1,6 +1,7 @@
 package com.sporty.group.ticketapigatewayservice.event;
 
-import com.sporty.group.ticketapigatewayservice.model.Ticket;
+import com.sporty.group.sportygroupticketingcommons.event.TicketCreatedEvent;
+import com.sporty.group.sportygroupticketingcommons.model.Ticket;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;

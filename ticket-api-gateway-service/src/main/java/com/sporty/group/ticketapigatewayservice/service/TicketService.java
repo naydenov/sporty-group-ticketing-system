@@ -1,8 +1,8 @@
 package com.sporty.group.ticketapigatewayservice.service;
 
+import com.sporty.group.sportygroupticketingcommons.event.TicketCreatedEvent;
 import com.sporty.group.ticketapigatewayservice.dto.TicketRequest;
-import com.sporty.group.ticketapigatewayservice.event.TicketCreatedEvent;
-import com.sporty.group.ticketapigatewayservice.model.Ticket;
+import com.sporty.group.sportygroupticketingcommons.model.Ticket;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;

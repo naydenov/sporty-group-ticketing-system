@@ -1,7 +1,7 @@
 package com.sporty.group.agentassignmentservice.service;
 
 import com.sporty.group.agentassignmentservice.config.KafkaConfig;
-import com.sporty.group.agentassignmentservice.model.event.TicketAssignedEvent;
+import com.sporty.group.sportygroupticketingcommons.event.TicketAssignedEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

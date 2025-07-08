@@ -1,11 +1,9 @@
-package com.sporty.group.ticketmanagementservice.model.event;
+package com.sporty.group.sportygroupticketingcommons.event;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 /**
  * Event representing a newly created ticket.
@@ -17,6 +15,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class NewTicketEvent {
     private String ticketId;
+    private String userId;
     private String status;
     private String subject;
     private String description;

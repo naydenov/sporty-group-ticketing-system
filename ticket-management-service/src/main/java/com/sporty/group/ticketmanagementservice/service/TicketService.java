@@ -1,12 +1,11 @@
 package com.sporty.group.ticketmanagementservice.service;
 
+import com.sporty.group.sportygroupticketingcommons.event.NewTicketEvent;
+import com.sporty.group.sportygroupticketingcommons.event.TicketAssignedEvent;
+import com.sporty.group.sportygroupticketingcommons.event.TicketCreatedEvent;
+import com.sporty.group.sportygroupticketingcommons.event.TicketStatusUpdatedEvent;
 import com.sporty.group.ticketmanagementservice.model.Ticket;
-import com.sporty.group.ticketmanagementservice.model.event.NewTicketEvent;
-import com.sporty.group.ticketmanagementservice.model.event.TicketAssignedEvent;
-import com.sporty.group.ticketmanagementservice.model.event.TicketCreatedEvent;
-import com.sporty.group.ticketmanagementservice.model.event.TicketStatusUpdatedEvent;
 import com.sporty.group.ticketmanagementservice.repository.TicketRepository;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -64,6 +63,7 @@ public class TicketService {
         NewTicketEvent newTicketEvent = NewTicketEvent.builder()
                 .ticketId(ticketId.toString())
                 .status(ticket.getStatus().name().toLowerCase())
+                .userId(ticket.getUserId())
                 .subject(ticket.getSubject())
                 .description(ticket.getDescription())
                 .createdAt(ticket.getCreatedAt().format(DATE_FORMATTER))

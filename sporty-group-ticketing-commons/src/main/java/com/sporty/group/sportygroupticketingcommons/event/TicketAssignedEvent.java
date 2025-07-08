@@ -1,4 +1,4 @@
-package com.sporty.group.ticketmanagementservice.model.event;
+package com.sporty.group.sportygroupticketingcommons.event;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
